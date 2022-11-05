@@ -1,0 +1,64 @@
+Given a Binary Tree. Return true if, for every node X in the tree other than the leaves, its value is equal to the sum of its left subtree's value and its right subtree's value. Else return false.
+
+Example 1:
+
+Input:
+    3
+  /   \    
+ 1     2
+
+Output: 1
+
+Example 2:
+
+Input:
+
+          10
+        /    \
+      20      30
+    /   \ 
+   10    10
+
+Output: 0
+
+
+class Solution
+{
+    private:
+    pair<bool,int> isSumFast(Node *root){
+        if(root == NULL){
+            pair<bool,int>p = make_pair(true,0);
+            return p;
+        }
+        if(root->left == NULL && root->right == NULL){
+            pair<bool,int>p = make_pair(true,root->data);
+            return p;
+        }
+        
+        pair<bool,int>left = isSumFast(root->left);
+        pair<bool,int>right = isSumFast(root->right);
+        
+        bool leftAns = left.first;
+        bool rightAns = right.first;
+        
+        bool isEqual = root->data == (left.second + right.second);
+        
+        pair<bool,int>ans;
+        ans.second = left.second + right.second;
+        
+        if(leftAns && rightAns && isEqual){
+            ans.first = true;
+            ans.second = root->data + left.second + right.second;  
+            }
+        else{
+            ans.first = false;
+            
+        }
+        return ans; }
+    
+    public:
+    bool isSumTree(Node* root)
+    {
+     return  isSumFast(root).first;
+    }
+};
