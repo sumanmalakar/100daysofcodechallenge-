@@ -1,0 +1,97 @@
+https://practice.geeksforgeeks.org/problems/boundary-traversal-of-binary-tree/1
+
+Given a Binary Tree, find its Boundary Traversal
+
+Example 1:
+
+Input:
+        1 
+      /   \
+     2     3  
+    / \   / \ 
+   4   5 6   7
+      / \
+     8   9
+   
+Output: 1 2 4 8 9 6 7 3
+
+
+Example 2:
+
+Input:
+            1
+           /
+          2
+        /  \
+       4    9
+     /  \    \
+    6    5    3
+             /  \
+            7     8
+
+Output: 1 2 4 6 5 7 8
+
+
+class Solution {
+private:
+ void left_part(Node *root, vector<int> &v){
+     if(root==NULL || (root->left == NULL && root->right == NULL )){
+         return;
+     }
+     v.push_back(root->data); 
+     if(root->left){
+     left_part(root->left,v);
+     }
+     else{
+         left_part(root->right,v);
+     }
+ }
+ 
+ void leaf_part(Node *root, vector<int> &v){ 
+     if(root == NULL) return;
+     if(root->left == NULL && root->right == NULL){
+         v.push_back(root->data);
+         return;
+     }
+     leaf_part(root->left,v);
+     leaf_part(root->right,v);
+     
+ }
+ 
+ void right_part(Node *root, vector<int> &v){
+     if(root==NULL || (root->right == NULL && root->left == NULL)){
+         return;
+     }
+ 
+    if(root->right){
+     right_part(root->right, v);
+    }else{
+        right_part(root->left,v);
+    }
+    
+    // call lagne ke baad insert kar (backtracking)
+    v.push_back(root->data);
+ }
+ 
+ public:
+    vector <int> boundary(Node *root){ 
+        vector<int>ans;
+        if(root == NULL) return ans;
+        ans.push_back(root->data);
+    
+        //left wala part
+        left_part(root->left,ans);
+        
+        // leaf wala part (left sub tree)
+        leaf_part(root->left ,ans);
+        
+        // leaf wala part (right sub tree)
+         leaf_part(root->right ,ans);
+        
+        // right wala part
+        if(root->right){
+            right_part(root ->right,ans);
+        }
+          return ans;
+    }
+};
