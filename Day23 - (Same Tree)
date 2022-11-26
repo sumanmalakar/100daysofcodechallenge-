@@ -1,0 +1,75 @@
+Given the roots of two binary trees p and q, write a function to check if they are the same or not.
+
+Two binary trees are considered the same if they are structurally identical, and the nodes have the same value.
+
+ 
+
+Example 1:
+
+
+Input: p = [1,2,3], q = [1,2,3]
+Output: true
+Example 2:
+
+
+Input: p = [1,2], q = [1,null,2]
+Output: false
+Example 3:
+
+
+Input: p = [1,2,1], q = [1,1,2]
+Output: false
+ 
+
+Constraints:
+
+The number of nodes in both trees is in the range [0, 100].
+-104 <= Node.val <= 104
+Accepted
+1.3M
+Submissions
+2.3M
+Acceptance Rate
+56.5%
+
+
+class Solution {
+public: 
+    void tree_first(TreeNode * P, vector<int>&v){
+        if(P==NULL){
+            v.push_back(-1);
+            return;
+        }
+        v.push_back(P->val);
+        tree_first(P->left, v);
+        tree_first(P->right, v);
+        
+    }
+      void tree_second(TreeNode * P, vector<int>&v){
+        if(P==NULL){
+            v.push_back(-1);
+            return;
+        }
+        v.push_back(P->val);
+        tree_second(P->left,v);
+        tree_second(P->right,v);
+        
+    }
+    bool isSameTree(TreeNode* p, TreeNode* q) {
+     vector<int>v1;
+        vector<int>v2;
+        
+        tree_first(p,v1);
+        tree_second(q,v2);
+        
+        int n1 = v1.size();
+        int n2 = v2.size();
+        int n = max(n1,n2);
+        
+        for(int i=0; i<n; i++){
+            if(v1[i]!=v2[i])return false;
+        }
+        return true;
+
+    }
+};
